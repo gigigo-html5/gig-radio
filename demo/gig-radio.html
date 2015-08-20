@@ -1,0 +1,156 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="stylesheet" href="../bower_components/components-font-awesome/css/font-awesome.css">
+
+<dom-module id="gig-radio">
+
+    <style>
+
+        .radio {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            font-size: 16px;
+            line-height: 1.3;
+            color: var(--input-color-primary, #62a8ea);
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid var(--input-border-color, #e4eaec);
+            border-radius: 50%;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+            -webkit-transition: .3s ease-in-out 0s;
+            -o-transition: .3s ease-in-out 0s;
+            transition: .3s ease-in-out 0s;
+            cursor: pointer;
+            float: left;
+        }
+
+        .radio:before {
+            position:absolute;
+            left: 0;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            margin-left: 11px;
+            transition: 500ms ease-in-out 0s;
+            -webkit-transition: 500ms ease-in-out 0s;
+            transform: scale(0);
+            -webkit-transform: scale(0);
+        }
+
+        .radio.checked {
+            border-color: var(--input-border-color-checked, #62a8ea);
+            text-align: center;
+        }
+
+        .radio.checked:before {
+            transform: scale(1);
+            -webkit-transform: scale(1);
+        }
+
+        input {
+            display:none;
+        }
+
+        label {
+            display: inline-block;
+            position:relative;
+            padding: 0 10px;
+            vertical-align: middle;
+            min-height: 22px;
+            font-weight: 300px;
+            color: var(--input-text-color, #76838f);
+            font-family: sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+            float: left;
+        }
+
+        .field-check:after {
+            visibility: hidden;
+            display: block;
+            font-size: 0;
+            content: " ";
+            clear: both;
+            height: 0;
+        }
+
+        .checkbox.error {
+            border-color: var(--input-color-error, #f96868);
+        }
+
+        p.error {
+            padding: 5px 0;
+            margin: 0;
+            font-family: sans-serif;
+            color: var(--input-color-error, #f96868);
+        }
+
+        .small {
+            font-size: 85%;
+        }
+
+    </style>
+
+    <template>
+
+        <div class="field-check">
+            <div class="radio" class$="[[getClassList(checked, errorMessage)]]" on-click="_clickCheck"></div>
+
+            <input type="radio"
+                   checked$="[[checked]]"
+                   required$="[[required]]"
+                   disabled$="[[disabled]]"
+                   name$="[[name]]"
+                   value$="[[value]]">
+
+            <template is="dom-if" if="[[label]]">
+                <label>[[label]]</label>
+            </template>
+
+        </div>
+
+        <template is="dom-if" if="[[errorMessage]]">
+            <p class="error small">[[errorMessage]]</p>
+        </template>
+
+    </template>
+
+    <script>
+        (function() {
+
+            var self;
+
+            Polymer({
+                _clickCheck: function() {
+                    this.checked = !this.checked;
+                },
+                getClassList: function(checked, errorMessage) {
+                    var classList = 'radio';
+
+                    if (checked) {
+                        classList += ' checked fa fa-circle';
+                    }
+
+                    if (errorMessage) {
+                        classList += ' error';
+                    }
+
+                    return classList;
+                },
+                properties: {
+                    checked: {
+                        type: Boolean,
+                        notify: true,
+                        value: false
+                    },
+                    errorMessage: {
+                        type: String,
+                        value: ''
+                    }
+                }
+            })
+        })();
+    </script>
+
+</dom-module>
